@@ -29,6 +29,7 @@ export default function Home() {
   const [themeId,     setThemeId]     = useState(DEFAULT_THEME_ID)
   const [pbiPrompt,   setPbiPrompt]   = useState(null)
   const [galleryOpen,  setGalleryOpen]  = useState(false)
+  const [sidebarOpen,  setSidebarOpen]  = useState(true)
 
   // Active theme is always from Envato
   const activeTheme = getEnvatoTheme(themeId) || ENVATO_THEMES[0]
@@ -101,7 +102,16 @@ export default function Home() {
 
       <div className={styles.layout}>
         {/* ── Sidebar ── */}
-        <aside className={styles.sidebar}>
+        {/* Toggle button */}
+        <button
+          className={`${styles.toggleBtn} ${sidebarOpen ? styles.toggleBtnExpanded : ''}`}
+          onClick={() => setSidebarOpen(o => !o)}
+          title={sidebarOpen ? 'Ocultar panel' : 'Mostrar panel'}
+        >
+          {sidebarOpen ? '‹' : '›'}
+        </button>
+
+        <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.sidebarCollapsed : ''}`}>
           <div className={styles.sidebarInner}>
 
             {/* Template picker */}

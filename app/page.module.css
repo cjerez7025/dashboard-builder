@@ -21,6 +21,45 @@
   flex-direction: column;
   overflow: visible;
   background: linear-gradient(180deg, rgba(14,18,37,0.7) 0%, rgba(7,9,26,0.9) 100%);
+  transition: width 0.25s ease, opacity 0.2s ease;
+}
+
+.sidebarCollapsed {
+  width: 0 !important;
+  opacity: 0;
+  pointer-events: none;
+  border-right: none;
+  overflow: hidden;
+}
+
+.toggleBtn {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  width: 18px;
+  height: 48px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-hover);
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+  font-size: 10px;
+}
+.toggleBtn:hover {
+  background: var(--bg-overlay);
+  color: var(--text-primary);
+  width: 22px;
+}
+
+.toggleBtnExpanded {
+  left: var(--sidebar-w);
 }
 
 .sidebarInner {
