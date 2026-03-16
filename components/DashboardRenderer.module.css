@@ -218,3 +218,23 @@
   .chartCard { grid-column: span 4 !important; grid-row: span 1 !important; }
   .emptyContent { max-width: 100%; margin: 0 16px; }
 }
+
+/* Editor mode */
+.wrapEditing { user-select: none; }
+.chartCard.editMode { pointer-events: none; opacity: 0.7; }
+
+/* Grid wrapper — positions charts and editor overlay together */
+.gridWrapper {
+  position: relative;
+}
+
+/* Editor layer — same grid, absolutely covers chartCards */
+.editorLayer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  pointer-events: none;
+}
+.editorLayer > * { pointer-events: all; }

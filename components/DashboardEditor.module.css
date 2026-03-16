@@ -1,0 +1,157 @@
+/* Editor overlay — sits on top of the dashboard grid, same grid layout */
+.overlay {
+  display: contents; /* inherits the parent CSS grid */
+  pointer-events: none;
+}
+
+/* Each card overlay — matches ChartCard grid position */
+.cardOverlay {
+  position: relative;
+  pointer-events: all;
+  border-radius: 10px;
+  border: 2px dashed rgba(99,102,241,0.5);
+  background: rgba(99,102,241,0.04);
+  cursor: grab;
+  transition: border-color .15s, background .15s;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  min-height: 60px;
+}
+.cardOverlay:hover { border-color: rgba(99,102,241,0.8); background: rgba(99,102,241,0.07); }
+.cardOverlay:active { cursor: grabbing; }
+
+.dragging {
+  opacity: .5;
+  border-style: solid;
+  border-color: var(--accent);
+}
+.dragOver {
+  border-color: #10B981;
+  background: rgba(16,185,129,0.08);
+  border-style: solid;
+}
+
+/* Top toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  background: rgba(10,12,30,0.92);
+  border-radius: 8px 8px 0 0;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(99,102,241,0.2);
+  flex-wrap: wrap;
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.toolBtn {
+  width: 24px; height: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  color: #9CA3AF;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .12s;
+  font-family: inherit;
+}
+.toolBtn:hover:not(:disabled) { background: rgba(99,102,241,0.3); color: #fff; border-color: rgba(99,102,241,0.5); }
+.toolBtn:disabled { opacity: .3; cursor: not-allowed; }
+
+.deleteBtn:hover:not(:disabled) { background: rgba(239,68,68,0.3) !important; border-color: rgba(239,68,68,0.5) !important; color: #FCA5A5 !important; }
+
+.dragHandle {
+  padding: 0 6px;
+  color: rgba(255,255,255,0.3);
+  font-size: 14px;
+  cursor: grab;
+  letter-spacing: 1px;
+}
+.dragHandle:active { cursor: grabbing; }
+
+/* Title editor */
+.titleWrap { flex: 1; min-width: 80px; }
+.titleDisplay {
+  font-size: 11px;
+  color: #9CA3AF;
+  cursor: text;
+  display: block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all .12s;
+  border: 1px solid transparent;
+}
+.titleDisplay:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #fff; }
+
+.titleInput {
+  width: 100%;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.5);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 3px 6px;
+  outline: none;
+}
+
+.colLabel {
+  font-size: 10px;
+  color: #6B7280;
+  min-width: 30px;
+  text-align: center;
+  font-family: monospace;
+}
+
+/* Chart type bar */
+.typeBar {
+  display: flex;
+  gap: 3px;
+  padding: 5px 8px;
+  background: rgba(10,12,30,0.85);
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(99,102,241,0.1);
+}
+.typeBtn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  background: transparent;
+  color: #6B7280;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all .12s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.typeBtn span:first-child { font-size: 12px; }
+.typeBtn:hover { background: rgba(255,255,255,0.06); color: #D1D5DB; }
+.typeBtnActive {
+  background: rgba(99,102,241,0.25) !important;
+  border-color: rgba(99,102,241,0.6) !important;
+  color: #A5B4FC !important;
+}
+
+/* Drag hint at bottom */
+.dragHint {
+  margin-top: auto;
+  padding: 4px 8px;
+  font-size: 9px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  letter-spacing: .03em;
+}

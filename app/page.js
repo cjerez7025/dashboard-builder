@@ -13,7 +13,9 @@ import { loadData }      from '@/lib/DataAdapter'
 import { generateDashboard } from '@/lib/AIEngine'
 import { DEMO_DATASET, DEMO_CONFIG } from '@/lib/demoData'
 import { getEnvatoTheme, ENVATO_THEMES } from '@/lib/envatoThemes'
-const EnvatoGallery = dynamic(() => import('@/components/EnvatoGallery'), { ssr: false })
+const EnvatoGallery  = dynamic(() => import('@/components/EnvatoGallery'),  { ssr: false })
+const SessionPanel   = dynamic(() => import('@/components/SessionPanel'),   { ssr: false })
+const PowerBIExport  = dynamic(() => import('@/components/PowerBIExport'),  { ssr: false })
 import styles from './page.module.css'
 
 // Default to first Envato theme
@@ -29,7 +31,10 @@ export default function Home() {
   const [themeId,     setThemeId]     = useState(DEFAULT_THEME_ID)
   const [pbiPrompt,   setPbiPrompt]   = useState(null)
   const [galleryOpen,  setGalleryOpen]  = useState(false)
+  const [sessionOpen,  setSessionOpen]  = useState(false)
+  const [pbiExportOpen, setPbiExportOpen] = useState(false)
   const [sidebarOpen,  setSidebarOpen]  = useState(true)
+  const [editMode,     setEditMode]     = useState(false)
 
   // Active theme is always from Envato
   const activeTheme = getEnvatoTheme(themeId) || ENVATO_THEMES[0]
@@ -92,13 +97,25 @@ export default function Home() {
     setDashConfig(null); setChatHistory([]); setGenStatus('idle')
   }, [])
 
+  // ── Load session from file ──────────────────────────────────────────────
+  const handleSessionLoad = useCallback((session) => {
+    if (session.config)      setDashConfig(session.config)
+    if (session.chatHistory) setChatHistory(session.chatHistory)
+    if (session.themeId)     setThemeId(session.themeId)
+    if (session.rowsSample?.length) {
+      setDataset({ rows: session.rowsSample, columns: [], summary: { rowCount: session.rowsTotal, columnCount: 0, numericColumns:[], categoricalColumns:[], dateColumns:[] } })
+      setDataStatus('ready')
+    }
+    setGenStatus('done')
+  }, [])
+
   const hasData   = dataStatus === 'ready'
   const hasConfig = !!dashConfig
   const isLoading = genStatus === 'loading'
 
   return (
     <div className={styles.app}>
-      <Header onNewSession={handleNewSession} hasData={hasData} hasConfig={hasConfig} />
+      <Header onNewSession={handleNewSession} hasData={hasData} hasConfig={hasConfig} editMode={editMode} onToggleEdit={() => setEditMode(e => !e)} onSessions={() => setSessionOpen(true)} />
 
       <div className={styles.layout}>
         {/* ── Sidebar ── */}
@@ -135,6 +152,14 @@ export default function Home() {
                     </div>
                   )}
                   <div className={styles.divider}><span>or</span></div>
+                  <button className={`btn btn-ghost ${styles.demoBtn}`}
+                    style={{ borderColor:'rgba(99,102,241,0.3)', color:'var(--accent-hover)' }}
+                    onClick={() => setSessionOpen(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Abrir sesión guardada
+                  </button>
                   <button className={`btn btn-ghost ${styles.demoBtn}`} onClick={handleDemo}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <polygon points="5,3 19,12 5,21"/>
@@ -164,7 +189,7 @@ export default function Home() {
 
           {hasConfig && (
             <div className={styles.sidebarFooter}>
-              <ExportMenu config={dashConfig} rows={dataset?.rows} />
+              <ExportMenu config={dashConfig} rows={dataset?.rows} onPowerBI={() => setPbiExportOpen(true)} />
             </div>
           )}
         </aside>
@@ -180,14 +205,32 @@ export default function Home() {
                   <span className="spinner" />
                   <span>Refinando dashboard…</span>
                 </div>
-                <DashboardRenderer config={dashConfig} rows={dataset?.rows} id="dashboard-render" envatoTheme={activeTheme} />
+                <DashboardRenderer config={dashConfig} rows={dataset?.rows} id="dashboard-render" envatoTheme={activeTheme} editMode={editMode} onConfigUpdate={setDashConfig} />
               </>
             ) : (
-              <DashboardRenderer config={dashConfig} rows={dataset?.rows} id="dashboard-render" envatoTheme={activeTheme} />
+              <DashboardRenderer config={dashConfig} rows={dataset?.rows} id="dashboard-render" envatoTheme={activeTheme} editMode={editMode} onConfigUpdate={setDashConfig} />
             )}
           </div>
         </main>
       </div>
+      {pbiExportOpen && (
+        <PowerBIExport
+          config={dashConfig}
+          onClose={() => setPbiExportOpen(false)}
+        />
+      )}
+
+      {sessionOpen && (
+        <SessionPanel
+          config={dashConfig}
+          rows={dataset?.rows}
+          chatHistory={chatHistory}
+          themeId={themeId}
+          onSessionLoad={handleSessionLoad}
+          onClose={() => setSessionOpen(false)}
+        />
+      )}
+
       {galleryOpen && (
         <EnvatoGallery
           selectedId={themeId}

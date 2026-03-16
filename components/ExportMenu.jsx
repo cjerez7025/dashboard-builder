@@ -170,9 +170,10 @@ const FORMATS = [
   { id: 'excel', label: 'Excel .xlsx',  icon: '📗', desc: 'Archivo con hojas de datos'   },
   { id: 'png',   label: 'PNG',          icon: '🖼️', desc: 'Captura del dashboard'        },
   { id: 'pdf',   label: 'PDF',          icon: '📄', desc: 'Documento imprimible'         },
+  { id: 'powerbi', label: 'Power BI',     icon: '⚡', desc: 'Panel dinámico con iframe'    },
 ]
 
-export default function ExportMenu({ config, rows }) {
+export default function ExportMenu({ config, rows, onPowerBI }) {
   const [open,  setOpen]  = useState(false)
   const [busy,  setBusy]  = useState(null)
   const [done,  setDone]  = useState(null)
@@ -200,11 +201,12 @@ export default function ExportMenu({ config, rows }) {
 
     try {
       switch (id) {
-        case 'json':  runJSON(config, title);                  break
-        case 'csv':   runCSV(rows, title);                     break
-        case 'excel': await runExcel(rows, config, title);     break
-        case 'png':   await runPNG('dashboard-render', title); break
-        case 'pdf':   await runPDF('dashboard-render', title); break
+        case 'json':    runJSON(config, title);                  break
+        case 'csv':     runCSV(rows, title);                     break
+        case 'excel':   await runExcel(rows, config, title);     break
+        case 'png':     await runPNG('dashboard-render', title); break
+        case 'pdf':     await runPDF('dashboard-render', title); break
+        case 'powerbi': onPowerBI?.(); setOpen(false);           return
       }
       setDone(id)
       setTimeout(() => { setDone(null); setOpen(false) }, 1500)
