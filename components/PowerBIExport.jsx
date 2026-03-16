@@ -2,22 +2,48 @@
 import { useState } from 'react'
 import styles from './PowerBIExport.module.css'
 
-export default function PowerBIExport({ config, onClose }) {
-  const [src,      setSrc]      = useState('sheets')
-  const [url,      setUrl]      = useState('')
+export default function PowerBIExport({ config, dataSource, onClose }) {
+  // Auto-fill URL and src from the loaded data source
+  const initUrl = dataSource?.type === 'sheets' ? (dataSource.url || '') : ''
+  const initSrc = dataSource?.type === 'sheets' ? 'sheets'
+                : dataSource?.type === 'json'   ? 'json'
+                : 'sheets'
+  const [src,      setSrc]      = useState(initSrc)
+  const [url,      setUrl]      = useState(initUrl)
   const [refresh,  setRefresh]  = useState('300')
   const [themeId,  setThemeId]  = useState('')
   const [showTitle,setShowTitle]= useState(true)
   const [copied,   setCopied]   = useState(false)
 
   // Build embed URL
+  // Convert any Google Sheets URL to the CSV export format
+  function normalizeSheetUrl(rawUrl) {
+    if (!rawUrl) return ''
+    try {
+      // Extract sheet ID
+      const idMatch = rawUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/)
+      if (!idMatch) return rawUrl
+      const sheetId = idMatch[1]
+      // Extract gid — from ?gid=, #gid= or &gid=
+      const gidMatch = rawUrl.match(/[?#&]gid=(\d+)/)
+      const gid = gidMatch ? gidMatch[1] : '0'
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`
+    } catch {
+      return rawUrl
+    }
+  }
+
   function buildUrl() {
     try {
-      const base   = window.location.origin
-      const cfgB64 = btoa(JSON.stringify(config))
-      const params  = new URLSearchParams()
+      const base    = window.location.origin
+      // Use btoa with UTF-8 safe encoding
+      const cfgJson = JSON.stringify(config)
+      const cfgB64  = btoa(encodeURIComponent(cfgJson).replace(/%([0-9A-F]{2})/g,
+        (_, p1) => String.fromCharCode(parseInt(p1, 16))))
+      const cleanUrl = src === 'sheets' ? normalizeSheetUrl(url.trim()) : url.trim()
+      const params   = new URLSearchParams()
       params.set('src',    src)
-      if (url.trim())      params.set('url',    url.trim())
+      if (cleanUrl)        params.set('url',    cleanUrl)
       params.set('config', cfgB64)
       if (refresh !== '0') params.set('refresh', refresh)
       if (themeId)         params.set('theme',   themeId)

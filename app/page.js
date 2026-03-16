@@ -216,6 +216,7 @@ export default function Home() {
       {pbiExportOpen && (
         <PowerBIExport
           config={dashConfig}
+          dataSource={dataset?.source}
           onClose={() => setPbiExportOpen(false)}
         />
       )}
