@@ -45,7 +45,7 @@ export default function Home() {
     setDataError(null)
     try {
       const data = await loadData(source)
-      setDataset(data)
+      setDataset({ ...data, source })  // keep original source for PowerBI export
       setDataStatus('ready')
       if (source.type === 'pbi_model' && source.prompt) {
         setPbiPrompt(source.prompt)
