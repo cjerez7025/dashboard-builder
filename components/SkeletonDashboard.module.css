@@ -1,0 +1,32 @@
+.wrap { display: flex; flex-direction: column; gap: 20px; }
+
+.titleRow { display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+.dashTitle { height: 22px; width: 220px; border-radius: var(--radius-sm); }
+.dashSub   { height: 14px; width: 60px;  border-radius: 99px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.header { display: flex; align-items: center; justify-content: space-between; }
+.titleBar { height: 12px; width: 120px; border-radius: 4px; }
+.badge    { height: 18px; width: 44px;  border-radius: 99px; }
+.body     { flex: 1; border-radius: var(--radius-md); }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: repeat(4,1fr); }
+  .card { grid-column: span 4 !important; }
+}

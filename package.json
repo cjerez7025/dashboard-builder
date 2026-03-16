@@ -1,0 +1,22 @@
+{
+  "name": "dashboard-builder",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "highcharts": "^12.5.0",
+    "highcharts-react-official": "^3.2.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.4",
+    "next": "16.1.6",
+    "papaparse": "^5.5.3",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "xlsx": "^0.18.5"
+  }
+}

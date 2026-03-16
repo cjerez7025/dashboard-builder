@@ -1,0 +1,159 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.disabledHint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  background: var(--bg-elevated);
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.msg { display: flex; }
+.user      { justify-content: flex-end; }
+.assistant { justify-content: flex-start; }
+
+.userBubble {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border-bottom-right-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 90%;
+  word-break: break-word;
+}
+
+.aiBubble {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border-bottom-left-radius: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  max-width: 90%;
+}
+
+.checkIcon {
+  color: var(--success);
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.errorIcon {
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 5px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.chip:hover:not(:disabled) {
+  border-color: var(--border-accent);
+  color: var(--accent-hover);
+  background: var(--accent-subtle);
+}
+.chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.inputRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.textarea {
+  flex: 1;
+  resize: none;
+  line-height: 1.5;
+  font-size: 12px !important;
+}
+
+.sendBtn {
+  padding: 9px 12px !important;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.hint {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+
+/* Power BI suggested prompt */
+.suggestedWrap {
+  background: rgba(242,200,17,0.06);
+  border: 1px solid rgba(242,200,17,0.2);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.suggestedLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(242,200,17,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.suggestedText {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.suggestedActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

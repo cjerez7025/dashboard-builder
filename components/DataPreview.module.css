@@ -1,0 +1,94 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.th {
+  background: var(--bg-elevated);
+  padding: 7px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  /* override display:flex for th */
+}
+
+/* Reset — th inside table must be table-cell */
+table th.th {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.colName {
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-right: 4px;
+  font-family: var(--font-mono);
+}
+
+.tr:hover td { background: var(--bg-elevated); }
+
+.td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  max-width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+}
+
+.tr:last-child .td { border-bottom: none; }
+
+.num {
+  color: var(--accent-hover);
+}
+
+.more {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: center;
+  padding: 4px;
+}
