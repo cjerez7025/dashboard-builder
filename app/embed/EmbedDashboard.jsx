@@ -64,15 +64,18 @@ export default function EmbedDashboard() {
     setStatus('loading')
     setError(null)
     try {
+      // Decode URL in case it was percent-encoded
+      const decodedUrl = decodeURIComponent(url)
       let source
-      if (src === 'sheets') source = { type: 'sheets', url }
-      else if (src === 'csv_url') {
-        const res  = await fetch(url)
+      if (src === 'sheets') {
+        // Use the original Google Sheets URL — DataAdapter handles the proxy
+        source = { type: 'sheets', url: decodedUrl }
+      } else if (src === 'csv_url') {
+        const res  = await fetch(decodedUrl)
         const text = await res.text()
         source = { type: 'paste', text }
       } else {
-        // json
-        const res  = await fetch(url)
+        const res  = await fetch(decodedUrl)
         const json = await res.json()
         source = { type: 'paste', text: JSON.stringify(Array.isArray(json) ? json : json.data || json.rows || []) }
       }
